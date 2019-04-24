@@ -1,0 +1,1 @@
+<nav class="paging"><a {{ if .Paginator.HasPrev }}href="{{ .Paginator.Prev.URL }}" title="prev" rel="prev"{{ end }}><i class="fas fa-chevron-left"></i></a><span>{{.Paginator.PageNumber}}/{{.Paginator.TotalPages}}</span><a {{ if .Paginator.HasNext }}href="{{ .Paginator.Next.URL }}" title="next" rel="next"{{ end }}><i class="fas fa-chevron-right"></i></a></nav>

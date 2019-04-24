@@ -1,0 +1,46 @@
+.toc {
+	padding: 0 2rem;
+}
+
+@media (max-width: 768px) {
+	.toc {
+		padding: 0 1rem;
+	}
+}
+
+.toc nav>ul {
+	background-color: #eceff1;
+	border-radius: 4px;
+	display: inline-block;
+	font-size: .8rem;
+	padding: .5rem 1rem;
+	word-break: break-all;
+	list-style: none;
+}
+
+.toc ul {
+	padding: 0;
+}
+
+.toc ul ul {
+	padding-left: 1rem;
+}
+
+.toc ul ul ul {
+	padding-left: 1rem;
+}
+
+.toc li {
+	color: #90a4ae;
+}
+
+.toc ul ul>li {
+	font-weight: 700;
+	margin: .5rem 0;
+	list-style-type: decimal;
+}
+
+.toc ul ul ul>li {
+	list-style-type: disc;
+	font-weight: 500;
+}

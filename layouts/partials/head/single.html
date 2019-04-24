@@ -1,0 +1,64 @@
+<script type="application/ld+json">[
+{
+	"@context": "http://schema.org",
+	"@type": "{{ if (eq .Section "news") }}NewsArticle{{ else }}BlogPosting{{ end }}",
+	"mainEntityOfPage": {
+		"@type": "WebPage",
+		"@id":"{{ "/" | absURL }}"
+	},
+	"headline": "{{ .Title }}",
+	"image": {
+		"@type": "ImageObject",
+		"url": "{{ absURL (.Params.thumbnail | default (.Site.Params.Images.Thumbnail | default "img/thumb.png")) }}"
+	},
+	"datePublished": "{{ .Date.Format "2006-01-02T15:04:05JST" }}",
+	"dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05JST" }}",
+{{ with .Site.Params.Author.Name }}
+	"author": {
+		"@type": "Person",
+		"name": "{{ . }}"
+	},
+{{ end }}
+	"publisher": {
+		"@type": "Organization",
+		"name": "{{ if .Site.Params.Publisher.Name }}{{ .Site.Params.Publisher.Name }}{{ else }}{{ .Site.Title }}{{ end }}",
+		"logo": {
+			"@type": "ImageObject",
+			"url": "{{ absURL (.Site.Params.Publisher.Logo | default (.Site.Params.Images.Icon | default "img/icon.png")) }}"
+		}
+	},
+	"description": "{{ .Params.Description | default (.Summary | plainify) }}"
+},
+{
+	"@context": "http://schema.org/",
+	"@type": "BreadcrumbList",
+	"itemListElement": [
+		{
+			"@type": "ListItem",
+			"position": "0",
+			"item": {
+				"@id": "{{ "/"| absURL }}",
+				"name": "{{ .Site.Title }}"
+			}
+		},
+	{{ with .Section }}
+		{
+			"@type": "ListItem",
+			"position": "1",
+			"item": {
+				"@id": "{{ . | absURL }}",
+				"name": "{{ upper . }}"
+			}
+		},
+	{{ end }}
+		{
+			"@type": "ListItem",
+			"position": "{{ if .Section }}2{{ else }}1{{ end }}",
+			"item": {
+				"@id": "{{ .URL | absURL }}",
+				"name": "{{ .Title }} | {{ .Site.Title }}"
+			}
+		}
+	]
+}
+]</script>

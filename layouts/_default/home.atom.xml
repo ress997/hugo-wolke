@@ -1,0 +1,31 @@
+<feed xmlns='http://www.w3.org/2005/Atom' xml:lang='{{ .Site.LanguageCode }}'>
+	<title>{{ with .Title }}{{ if ne . $.Site.Title }}{{.}} on {{ end }}{{ end }}{{ .Site.Title }}</title>
+	<updated>{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" | safeHTML }}</updated>
+	<link href='{{ .Permalink }}' />
+	{{ with .OutputFormats.Get "atom" }}
+	<link rel="self" href="{{ .Permalink }}" type="{{ .MediaType.Type | html }}" />
+	{{ end }}
+	<link rel='hub' href='http://pubsubhubbub.appspot.com' />
+	<id>{{ .Permalink }}</id>
+
+	{{ with .Site.Author }}
+	<author>
+		{{ with .name }}<name>{{ . }}</name>{{ end }}
+		{{ with .email }}<email>{{ . }}</email>{{ end }}
+	</author>
+	{{ end }}
+
+	{{ with .Site.Copyright }}
+	<rights>{{ . }}</rights>
+	{{ end }}
+
+	{{ range first 15 .Data.Pages }}
+		<entry>
+			<title>{{ .Title }}</title>
+			<link href='{{ .Permalink }}' />
+			<updated>{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" | safeHTML }}</updated>
+			<summary>{{ .Description | default (plainify .Summary) }}</summary>
+		</entry>
+	{{ end }}
+
+</feed>

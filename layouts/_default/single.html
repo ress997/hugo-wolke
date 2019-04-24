@@ -1,0 +1,11 @@
+{{ define "title" }}{{ .Title }} | {{ end }}
+
+{{ define "head" }}
+{{ partial "head/single.html" . }}
+{{ end }}
+
+{{ define "main" }}
+{{ .Render "summary" }}
+{{ partial "single/adj.html" . }}
+{{ template "_internal/disqus.html" . }}
+{{ end }}

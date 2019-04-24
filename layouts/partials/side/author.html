@@ -1,0 +1,23 @@
+<section class="sidebar">
+	<header><h2>AUTHOR</h2></header>
+	<div class="author">
+		{{ with .thumbnail }}
+			{{ if $.Site.Parms.Images.Lazyload | default false }}
+				<div class="author-thumb lozad" data-background-image="{{ . | relURL }}"></div>
+			{{ else }}
+				<div class="author-thumb" style="background-image: url({{ . | relURL }});"></div>
+			{{ end }}
+		{{ end }}
+
+		<div class="author-name">{{ .name }}</div>
+
+		<ul class="author-facts">
+			{{ with .mastodon }}<li><a href="{{ . }}" target="_blank" title="Mastodon" rel="nofollow noopener noreferrer" ><i class="fab fa-mastodon" aria-hidden="true"></i></a></li>{{ end }}
+			{{ with .twitter }}<li><a href="https://twitter.com/{{ . }}" target="_blank" title="Twitter" rel="nofollow noopener noreferrer" ><i class="fab fa-twitter" aria-hidden="true"></i></a></li>{{ end }}
+			{{ with .facebook }}<li><a href="https://www.facebook.com/{{ . }}" target="_blank" title="Facebook" rel="nofollow noopener noreferrer" ><i class="fab fa-facebook" aria-hidden="true"></i></a></li>{{ end }}
+			{{ with .github }}<li><a href="https://github.com/{{ . }}" target="_blank" title="github" rel="nofollow noopener noreferrer" ><i class="fab fa-github" aria-hidden="true"></i></a></li>{{ end }}
+		</ul>
+
+		<div class="author-description">{{ .description | markdownify }}</div>
+	</div>
+</section>

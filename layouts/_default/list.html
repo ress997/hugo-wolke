@@ -1,0 +1,38 @@
+{{ define "li" }}
+<article class="li">
+	<a href="{{ .Permalink }}">
+		<div class="thumb thumb-{{ .UniqueID }}"></div>
+		<div class="inner">
+			<h2 class="title">{{ .Title }}</h2>
+			<ul class="facts">
+				{{ with .Section }}
+				<li><i class="fas fa-bookmark" aria-hidden="true"></i>{{ . | upper }}</li>
+				{{ end }}
+				<li><i class="fas fa-calendar" aria-hidden="true"></i><time datetime="{{ .Date.Format "2006-01-02T15:04:05-07:00" | html }}">{{ .Date.Format ( .Site.Params.dateformat | default "Jan 2, 2006") }}</time></li>
+			</ul>
+			<div class="summary">{{ plainify .Summary }}</div>
+		</div>
+	</a>
+</article>
+{{ end }}
+
+{{ define "title" }}{{ if not .IsHome }}{{ .Title }} | {{ end }}{{ end }}
+
+{{ define "main" }}
+{{ if not .IsHome }}
+	<header class="page-title">
+		<h1 class="title">{{ .Title }}</h1>
+	</header>
+{{ end }}
+
+<div class="articles grid">
+{{ range (.Paginate .Data.Pages).Pages }}
+	{{ template "li" . }}
+{{ end }}
+</div>
+
+{{ if gt .Paginator.TotalPages 1 }}
+	{{ partial "pagination.html" . }}
+{{ end }}
+
+{{ end }}

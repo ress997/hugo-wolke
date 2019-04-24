@@ -1,0 +1,19 @@
+.paging {
+	text-align: center;
+	padding: 1rem 0;
+}
+
+.paging a, .paging span {
+	display: inline-block;
+	background-color: #fff;
+	box-shadow: 0 0 0 1px rgba(63,63,68,.05), 0 1px 3px rgba(63,63,68,.1), 0 1px 2px rgba(0,0,0,.05);
+	border-radius: 8px;
+	color: #333;
+	padding: 0 1rem;
+	line-height: 3rem;
+	margin: 0 2px;
+}
+
+.paging a:not([href]) {
+	background-color: gray;
+}

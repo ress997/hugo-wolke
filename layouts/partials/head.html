@@ -1,0 +1,47 @@
+{{ define "description" }}
+	{{ if .IsPage }}
+		{{ .Params.Description | default (.Summary | plainify) }}
+	{{ else }}
+		{{ with .Site.Params.description }}
+			{{ . }}
+		{{ end }}
+	{{ end }}
+{{ end }}
+
+{{ define "thumb" }}
+	{{ absURL (.Params.thumbnail | default (.Site.Params.Images.Thumbnail | default "img/thumb.png")) }}
+{{ end }}
+
+{{ define "favicon" }}
+	{{ absURL (.Site.Params.Images.Icon | default "img/icon.png") }}
+{{ end }}
+
+{{ with .Site.Params.Pwa.Manifest }}
+<link rel="manifest" href="{{ . | relURL }}">
+{{ end }}
+<meta name="theme-color" content="#263238">
+<meta name="generator" content="Hugo {{ .Hugo.Version }}">
+
+{{- /* og */ -}}
+<meta name="description" content="{{ template "description" . }}">
+<meta property="og:title" content="{{ .Title }} | {{ .Site.Title }}">
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:image" content="{{ template "thumb" . }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:description" content="{{ template "description" . }}">
+<meta property="og:locale" content="{{ .Site.LanguageCode | default "en" }}">
+
+<meta name="twitter:site" content="{{ .Site.Title }}">
+<meta name="twitter:title" content="{{ .Title }} | {{ .Site.Title }}">
+<meta name="twitter:url" content="{{ .Permalink }}">
+<meta name="twitter:description" content="{{ template "description" . }}">
+{{ with .Site.Params.author.twitter }}
+<meta name="twitter:creator" content="@{{ . }}">
+{{ end }}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{{ template "thumb" . }}">
+
+{{- /* icon */ -}}
+<link rel="icon" href="{{ template "favicon" . }}">
+<link rel="apple-touch-icon" href="{{ template "favicon" . }}">

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html amp lang="{{ .Site.LanguageCode | default "en" }}">
+<head>
+	<link rel="preload" as="script" href="https://cdn.ampproject.org/v0.js">
+	<meta charset="utf-8">
+	<script async src="https://cdn.ampproject.org/v0.js"></script>
+
+	<link rel="canonical" href="{{ .Permalink }}">
+	<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+	<style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+
+{{ if and .Site.GoogleAnalytics (not .Site.IsServer) }}
+	<meta name="amp-google-client-id-api" content="googleanalytics">
+	<script async custom-element="amp-analytics" src="https://cdn.ampproject.org/v0/amp-analytics-0.1.js"></script>
+{{ end }}
+{{ if .Page.HasShortcode "twitter" }}
+	<script async custom-element="amp-twitter" src="https://cdn.ampproject.org/v0/amp-twitter-0.1.js"></script>
+{{ end }}
+{{ if .Page.HasShortcode "gist" }}
+	<script async custom-element="amp-gist" src="https://cdn.ampproject.org/v0/amp-gist-0.1.js"></script>
+{{ end }}
+{{ if .Page.HasShortcode "youtube" }}
+	<script async custom-element="amp-youtube" src="https://cdn.ampproject.org/v0/amp-youtube-0.1.js"></script>
+{{ end }}
+{{ if .Site.Params.Pwa.Script }}
+	<script async custom-element="amp-install-serviceworker" src="https://cdn.ampproject.org/v0/amp-install-serviceworker-0.1.js"></script>
+{{ end }}
+
+	<title>{{ block "title" . }}{{ end }}{{ .Site.Title }}</title>
+
+	{{ partial "head.html" . }}
+	{{ block "head" . }}{{ end }}
+	{{ partial "head/custom.html" . }}
+
+{{ if .Site.Params.Fonts.Googlefonts }}
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{{ end }}
+{{ if ne .Site.Params.Fonts.Fontawesome "min" }}
+	<link rel="preconnect" href="https://use.fontawesome.com" crossorigin>
+{{ else }}
+	<link rel="preload" href="https://use.fontawesome.com/releases/v5.2.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="https://use.fontawesome.com/releases/v5.2.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+{{ end }}
+{{ with .PrevInSection }}
+	<link rel="prefetch" href="{{ .Permalink }}" crossorigin="use-credentials">
+{{ end }}
+
+{{ with .NextInSection }}
+	<link rel="prefetch" href="{{ .Permalink }}" crossorigin="use-credentials">
+{{ end }}
+<link rel="prerender" href="{{ "/" | absURL }}">
+
+{{ with .Site.Params.Fonts.Googlefonts }}
+	<link rel="stylesheet" href="{{ . }}">
+{{ end }}
+{{ if ne .Site.Params.Fonts.Fontawesome "min" }}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<style amp-custom>
+{{ else }}
+	<style amp-custom>
+	{{ partial "fontawesome.css" . | safeCSS }}
+{{ end }}
+{{ partial "reset.css" . | safeCSS }}
+{{ partial "main.css" . | safeCSS }}
+{{ partial "single/adj.css" . | safeCSS }}
+{{ if and (.Site.Params.socialShare | default true) (.Params.socialShare | default true) }}
+	{{ partial "single/share.css" . | safeCSS }}
+{{ end }}
+{{ if .Params.toc }}
+	{{ partial "single/toc.css" . | safeCSS }}
+{{ end }}
+{{ if .Page.HasShortcode "img" }}
+	{{ partial "shortcodes/img.amp.css" . | safeCSS }}
+{{ end }}
+{{ partial "custom.css" . | safeCSS }}
+	</style>
+</head>
+<body>
+{{ if and .Site.GoogleAnalytics (not .Site.IsServer) }}
+	<amp-analytics type="googleanalytics" id="analytics1">
+		<script type="application/json">{"vars": {"account": {{ .Site.GoogleAnalytics }}}, "triggers": {"trackPageview": {"on": "visible", "request": "pageview"}}}</script>
+	</amp-analytics>
+{{ end }}
+{{ if .Site.Params.Pwa.Script }}
+	<amp-install-serviceworker src="{{ .Site.Params.Pwa.Script | relURL }}"{{ with .Site.Params.Pwa.Iframe }} data-iframe-src="{{ . | absURL }}"{{ end }} layout="nodisplay">
+	</amp-install-serviceworker>
+{{ end }}
+
+	<header class="l-header">
+		<h1 class="logo">
+			<a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+		</h1>
+	</header>
+
+	<main>
+		<div class="l-container">
+{{ block "main" . }}{{ end }}
+		</div>
+	</main>
+
+	<footer class="l-footer">
+		<div class="l-container">
+			<p>{{ with .Site.Copyright }}{{ . | safeHTML }}{{ else }}&copy; {{ .Site.Title }}{{ end }}</p>
+			<aside>
+				<p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
+				<p><a href="https://github.com/39e/hugo-wolke">Wolke</a> is provided by <a href="https://x39.dev/">ress</a>.</p>
+			</aside>
+		</div>
+	</footer>
+</body>
+</html>

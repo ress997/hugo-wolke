@@ -1,0 +1,62 @@
+html {
+	font-size: 18px;
+	background-color: rgba(236,239,241,.5);
+}
+
+@media (max-width: 768px) {
+	html {
+		font-size: 15px;
+	}
+}
+
+body {
+	color: #333;
+	font-family: {{ safeCSS (.Site.Params.Fonts.Fontfamily | default "arial, sans-serif") }};
+	font-feature-settings : "palt";
+	font-size: inherit;
+	line-height: 1rem;
+	margin: 0;
+	padding: 0;
+}
+
+h1, h2, h3, h4, h5 ,h6 {
+	font-size: 1rem;
+	font-weight: 700;
+	line-height: 1rem;
+	margin: 0;
+}
+
+hr {
+	border: 0;
+	border-top: 1px dashed #cfd8dc;
+	margin: 1rem 0;
+}
+
+p {
+	margin: 0;
+	line-height: 1rem;
+}
+
+a {
+	color: #2196f3;
+	text-decoration: none;
+	transition-duration: .3s;
+}
+
+ul, ol {
+	margin: 0;
+	padding: 0;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+th, td {
+	font-size: .8rem;
+	padding: .5rem;
+}
+
+tr {
+	border-bottom: 1px dashed #ddd;
+}

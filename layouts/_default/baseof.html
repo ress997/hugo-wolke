@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "en" }}">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<link rel="canonical" href="{{ .Permalink }}">
+{{ range .AlternativeOutputFormats -}}
+	<link rel="{{ .Rel }}" type="{{ .MediaType.Type | html }}" href="{{ .Permalink | safeURL }}" title="{{ $.Site.Title | safeHTML }}">
+{{ end -}}
+
+	<title>{{ block "title" . }}{{ end }}{{ .Site.Title }}</title>
+
+{{ partial "head.html" . }}
+{{ block "head" . }}{{ end }}
+{{ partial "head/custom.html" . }}
+
+{{ if .Site.Params.Fonts.Googlefonts }}
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+{{ end }}
+{{ if ne .Site.Params.Fonts.Fontawesome "min" }}
+	<link rel="preconnect" href="https://use.fontawesome.com" crossorigin>
+{{ else }}
+	<link rel="preload" href="https://use.fontawesome.com/releases/v5.2.0/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="preload" href="https://use.fontawesome.com/releases/v5.2.0/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+{{ end }}
+{{ if .IsPage }}
+	{{ with .PrevInSection }}
+		<link rel="prefetch" href="{{ .Permalink }}" crossorigin="use-credentials">
+	{{ end }}
+	{{ with .NextInSection }}
+		<link rel="prefetch" href="{{ .Permalink }}" crossorigin="use-credentials">
+	{{ end }}
+	<link rel="prerender" href="{{ "/" | absURL }}">
+{{ end }}
+
+{{ with .Site.Params.Fonts.Googlefonts }}
+	<link rel="stylesheet" href="{{ . }}">
+{{ end }}
+{{ if ne .Site.Params.Fonts.Fontawesome "min" }}
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+	<style>
+{{ else }}
+	<style>
+	{{ partial "fontawesome.css" . | safeCSS }}
+{{ end }}
+{{ partial "reset.css" . | safeCSS }}
+{{ partial "main.css" . | safeCSS }}
+{{ if .Site.Params.author }}
+	{{ partial "side/author.css" . | safeCSS }}
+{{ end }}
+{{ if .IsNode }}
+	{{ partial "pagination.css" . | safeCSS }}
+{{ else }}
+	{{ partial "single/adj.css" . | safeCSS }}
+	{{ if and (.Site.Params.socialShare | default true) (.Params.socialShare | default true) }}
+		{{ partial "single/share.css" . | safeCSS }}
+	{{ end }}
+	{{ if .Params.toc }}
+		{{ partial "single/toc.css" . | safeCSS }}
+	{{ end }}
+	{{ if .Page.HasShortcode "img" }}
+		{{ partial "shortcodes/img.css" . | safeCSS }}
+	{{ end }}
+{{ end }}
+{{ partial "custom.css" . | safeCSS }}
+	</style>
+
+{{ if and .Site.GoogleAnalytics (not .Site.IsServer) }}
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+<script>
+window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+ga('create', {{ .Site.GoogleAnalytics }}, 'auto', {'useAmpClientId': true});
+ga('send', 'pageview');
+</script>
+{{ end }}
+
+</head>
+<body>
+	<header class="l-header">
+		<h1 class="logo">
+			<a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a>
+		</h1>
+		{{ with .Site.Params.Description }}<div class="description">{{ . | markdownify }}</div>{{ end }}
+	</header>
+
+	<main>
+		<div class="l-container">
+{{ block "main" . }}{{ end }}
+
+{{ partial "side.html" . }}
+		</div>
+	</main>
+
+	<footer class="l-footer">
+		<div class="l-container">
+			<p>{{ with .Site.Copyright }}{{ . | safeHTML }}{{ else }}&copy; {{ .Site.Title }}{{ end }}</p>
+			<aside>
+				<p>Powered by <a href="https://gohugo.io/">Hugo</a>.</p>
+				<p><a href="https://github.com/39e/hugo-wolke">Wolke</a> is provided by <a href="https://x39.dev/">ress</a>.</p>
+			</aside>
+		</div>
+	</footer>
+
+{{ if .Site.Params.Images.Lazyload | default false }}
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=IntersectionObserver"></script>
+<script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script>
+{{ end }}
+
+<script>
+{{ if .Site.Params.Images.Lazyload | default false }}
+const observer = lozad();
+observer.observe();
+{{ end }}
+
+{{ with .Site.Params.Pwa.Script }}
+if ('serviceWorker' in navigator) {
+	window.addEventListener('load', function() {
+		navigator.serviceWorker.register('{{ . | relURL }}');
+	});
+}
+{{ end }}
+</script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+<aside>
+	{{ with .Site.Params.Author }}
+		{{ partial "side/author.html" . }}
+	{{ end }}
+
+	{{ if .Site.Params.EnableSideLatests | default false }}
+		{{ partial "side/latests.html" . }}
+	{{ end }}
+</aside>

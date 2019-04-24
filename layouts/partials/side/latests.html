@@ -1,0 +1,10 @@
+<section class="sidebar">
+	<header>LATESTS</header>
+	<div>
+		<div class="grid">
+			{{ range $i, $p := (first 6 .Site.Pages) }}
+			{{ template "lism" . }}
+			{{ end }}
+		</div>
+	</div>
+</section>

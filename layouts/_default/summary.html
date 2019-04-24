@@ -1,0 +1,49 @@
+<article class="sn">
+	<div class="thumb thumb-{{ .UniqueID }}"></div>
+
+	<header class="article-header">
+		<h1 class="title">{{ .Title }}</h1>
+
+		<ul class="facts">
+			{{ with .Section }}
+			<li><i class="fas fa-bookmark" aria-hidden="true"></i><a href="{{ . | urlize | relURL }}/">{{ . | upper }}</a></li>
+			{{ end }}
+			<li><i class="fas fa-calendar" aria-hidden="true"></i><time datetime="{{ .Date.Format "2006-01-02T15:04:05-07:00" | html }}">{{ .Date.Format ( .Site.Params.dateformat | default "Jan 2, 2006") }}</time></li>
+			{{ if ne (.Date.Format "2006-01-02") (.Lastmod.Format "2006-01-02") }}
+			<li><i class="fas fa-sync" aria-hidden="true"></i><time datetime="{{ .Lastmod.Format "2006-01-02T15:04:05-07:00" | html }}">{{ .Lastmod.Format ( .Site.Params.dateformat | default "Jan 2, 2006") }}</time></li>
+			{{ end }}
+		</ul>
+	</header>
+
+	{{ if .Params.toc }}
+	<div class="toc">
+		{{ .TableOfContents }}
+	</div>
+	{{ end }}
+
+	<div class="article-body">{{ .Content }}</div>
+
+	<footer class="article-footer">
+		{{ if and (.Site.Params.socialShare | default true) (.Params.socialShare | default true) }}
+			{{ partial "single/share.html" . }}
+		{{ end }}
+
+		{{ $params := .Params }}
+		{{ range $key, $value := $.Site.Taxonomies }}
+			{{ if isset $params $key }}
+				<section class="footer">
+					<header>
+						<a href="{{ $key | urlize | relURL }}/">{{ $key | upper }}</a>
+					</header>
+					<div>
+						<ul class="terms">
+						{{ range (index $params $key) }}
+						<li><a href="{{ $key | urlize | relURL }}/{{ . | urlize }}/">{{ . }}</a></li>
+						{{ end }}
+						</ul>
+					</div>
+				</section>
+			{{ end }}
+		{{ end }}
+	</footer>
+</article>
