@@ -14,7 +14,6 @@ This theme was created based on [ress997/Robust](https://github.com/ress997/hugo
 	- Mastodon
 	- Twitter
 	- Facebook
-	- Google+
 	- Pocket
 	- LINE
 	- Hatena Bookmark
