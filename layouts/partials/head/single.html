@@ -55,7 +55,7 @@
 			"@type": "ListItem",
 			"position": "{{ if .Section }}2{{ else }}1{{ end }}",
 			"item": {
-				"@id": "{{ .URL | absURL }}",
+				"@id": "{{ .Permalink }}",
 				"name": "{{ .Title }} | {{ .Site.Title }}"
 			}
 		}
