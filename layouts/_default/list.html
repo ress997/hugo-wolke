@@ -26,7 +26,10 @@
 {{ end }}
 
 <div class="articles grid">
-{{ range (.Paginate .Data.Pages).Pages }}
+{{ $pctx := . }}
+{{ if .IsHome }}{{ $pctx = .Site }}{{ end }}
+{{ $pages := $pctx.RegularPages -}}
+{{ range $pages }}
 	{{ template "li" . }}
 {{ end }}
 </div>
