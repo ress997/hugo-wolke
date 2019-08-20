@@ -28,8 +28,8 @@
 <div class="articles grid">
 {{ $pctx := . }}
 {{ if .IsHome }}{{ $pctx = .Site }}{{ end }}
-{{ $pages := $pctx.RegularPages -}}
-{{ range $pages }}
+{{ $paginator := .Paginate $pctx.RegularPages }}
+{{ range $paginator.Pages }}
 	{{ template "li" . }}
 {{ end }}
 </div>

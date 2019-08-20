@@ -4,9 +4,9 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
 	<link rel="canonical" href="{{ .Permalink }}">
-{{ range .AlternativeOutputFormats -}}
+{{ range .AlternativeOutputFormats }}
 	<link rel="{{ .Rel }}" type="{{ .MediaType.Type | html }}" href="{{ .Permalink | safeURL }}" title="{{ $.Site.Title | safeHTML }}">
-{{ end -}}
+{{ end }}
 
 	<title>{{ block "title" . }}{{ end }}{{ .Site.Title }}</title>
 
